@@ -86,3 +86,22 @@ async def process_question_streaming(input_data: QuestionInput):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    if __name__ == "__main__":
+    import uvicorn
+    from fastapi.middleware.cors import CORSMiddleware
+    from routes import router
+
+    # Add CORS middleware to existing app
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # Include routes on existing app
+    app.include_router(router, prefix="/api/v1")
+
+    # Run server
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
